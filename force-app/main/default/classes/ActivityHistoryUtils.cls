@@ -9,7 +9,7 @@ public with sharing class ActivityHistoryUtils {
         // Get Related Metadata
         ActivityHistory_Setting__mdt mtdRecord = [SELECT FieldSet_API_Name__c 
                                                     FROM ActivityHistory_Setting__mdt  
-                                                    WHERE Label = :sobjectName ];
+                                                    WHERE Label = :sobjectName];
         //Get FieldSet API Name
         String fieldSetName = mtdRecord.FieldSet_API_Name__c;
 
