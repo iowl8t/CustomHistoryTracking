@@ -11,15 +11,23 @@ public with sharing class HistoryController {
                                                 WHERE SObjectId__c = :recordId
                                                 ORDER BY CreatedDate DESC];
         
+        Set<Id> usersIds = new Set<Id>();
+        for (ActivityHistory__c ah : history) {
+            usersIds.add(ah.Who__c);
+        }
+
+        Map<Id, User> usersMap = new Map<Id, User>([SELECT Name FROM User WHERE Id IN :usersIds]);
+
         Integer position = 1;                                                
         List<ResponseWrapper> responseWrapper = new List<ResponseWrapper>();
         for (ActivityHistory__c h : history) {
+
             ResponseWrapper rwTemp = new ResponseWrapper(
                 position++, 
                 h.FieldName__c,
                 String.valueOf(h.OldValue__c), 
                 String.valueOf(h.NewValue__c), 
-                h.Who__c,
+                usersMap.get(h.Who__c).Name,
                 String.valueOf(h.CreatedDate)
             );
 
