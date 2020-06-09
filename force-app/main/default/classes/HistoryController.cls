@@ -1,8 +1,8 @@
 public with sharing class HistoryController {
 
-    @AuraEnabled
-    public static String getFields(String recordId) {
-        Schema.SObjectType sobjectType = ((Id) recordId).getSObjectType();
+    @AuraEnabled(cacheable=true)
+    public static String getFields(String sObjId) {
+        Schema.SObjectType sobjectType = ((Id) sObjId).getSObjectType();
         String sObjectName = sobjectType.getDescribe().getName();
 
         ActivityHistory_Setting__mdt mtdRecord = [SELECT FieldSet_API_Name__c 
@@ -21,29 +21,29 @@ public with sharing class HistoryController {
     }
 
 
-    @AuraEnabled
-    public static String getHistoryForRecord(String recordId, String fieldName) {
+    @AuraEnabled(cacheable=true)
+    public static String getHistoryForRecord(String sObjId, String fieldName) {
         List<ActivityHistory__c> history;
         if (fieldName != '') {
             history = (List<ActivityHistory__c>) Database.query(
-                'SELECT FieldName__c, ' +
+                'SELECT Id, FieldName__c, ' +
                         'OldValue__c, ' +
                         'NewValue__c, ' +
                         'Who__c, ' +
                         'CreatedDate ' + 
                 'FROM ActivityHistory__c ' + 
-                'WHERE SObjectId__c = :recordId AND ' +  
+                'WHERE SObjectId__c = :sObjId AND ' +  
                        'FieldName__c = :fieldName ' +
                 'ORDER BY CreatedDate DESC '
             );
         } else {
-            history = [SELECT FieldName__c,
+            history = [SELECT Id, FieldName__c,
                                 OldValue__c,
                                 NewValue__c,
                                 Who__c,
                                 CreatedDate
                             FROM ActivityHistory__c
-                            WHERE SObjectId__c = :recordId
+                            WHERE SObjectId__c = :sObjId
                             ORDER BY CreatedDate DESC];
         }
         Set<Id> usersIds = new Set<Id>();

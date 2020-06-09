@@ -1,0 +1,30 @@
+<template>
+
+    <div class="slds-box slds-box_xx-small slds-theme_default">
+        <div class="slds-text-align_center slds-text-title_caps">
+            <h1>History</h1>         
+        </div>
+    </div>
+
+    <div class="slds-box slds-box_xx-small slds-theme_default slds-p-right_xx-large">
+        <div class="slds-text-align_left ">
+            <lightning-combobox
+                            name="selectField"
+                            label="Select Field"
+                            value="selectedField"
+                            placeholder="--Select--"
+                            options={fieldOptions}
+                            onchange={handleSelected}>
+            </lightning-combobox>
+        </div>
+    </div>
+
+    <lightning-datatable key-field="Id" 
+                            data={historyList}
+                            columns={columns}
+                            aria-placeholder="--Select--"
+                            hide-checkbox-column>
+    </lightning-datatable>
+
+
+</template>

@@ -4,12 +4,12 @@
         let recordId = component.get("v.recordId");
         let action = component.get("c.getFields");
 
-        action.setParam("recordId", recordId);
+        action.setParam("sObjId", recordId);
 
         action.setCallback(this, function(response) {
             let state = response.getState();
 
-            if(state === 'SUCCESS'){
+            if(state === 'SUCCESS') {
                 let responseObject = JSON.parse(response.getReturnValue());
                 component.set("v.options", responseObject);
             } else {
@@ -37,7 +37,7 @@
 
             let action = component.get("c.getHistoryForRecord");
             action.setParams({
-                "recordId" : recordId,
+                "sObjId" : recordId,
                 "fieldName" : fieldName
             });
 
