@@ -1,10 +1,27 @@
 <aura:component controller="HistoryController" implements="force:hasRecordId, flexipage:availableForRecordHome" >
 
     <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="options" type="List" />
     <aura:attribute name="historycolumns" type="List" />
     <aura:attribute name="history" type="Object[]" />
 
-    <aura:handler name="init" value="{!this}" action="{!c.getHistory}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.loadFields}"/>
+
+
+    <div class="slds-box slds-box_x-small slds-theme_default slds-p-right_xx-large">
+        <div class="slds-text-align_left ">
+            <lightning:select aura:id="select" name="select" label="Select a Field" required="true" onchange="{! c.getHistory }">
+                <option value="chooseOne">choose one...</option>
+                <option value="">all fields</option>
+                <aura:iteration items="{!v.options}" var="option">
+                    <option value="{!option.value}" text="{!option.label}"></option>
+                </aura:iteration>
+            </lightning:select>
+        </div>
+    </div>
+
+
+
 
     <div class="slds-box slds-box_x-small slds-theme_default">
         <div class="slds-text-align_center slds-text-title_caps">
